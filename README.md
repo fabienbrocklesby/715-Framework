@@ -2,6 +2,8 @@
 
 A lightning-fast, zero-dependency reactive JavaScript framework with no fluff, just pure performance.
 
+**[🚀 Live Demo](https://fabienbrocklesby.github.io/715-Framework/demo.html)**
+
 ## What Makes 715 Special?
 
 **⚡ Lightning Fast** - O(1) targeted DOM updates, no virtual DOM overhead  
