@@ -10,13 +10,20 @@ A lightning-fast, zero-dependency reactive JavaScript framework with no fluff, j
 **🔧 Zero Dependencies** - Pure JavaScript, no external libraries required  
 **💾 Built-in Persistence** - Automatic localStorage and sessionStorage support  
 **🎯 Minimal Setup** - Works directly in browsers with no build process  
-**📦 Tiny Size** - Under 5KB minified  
+**📦 Tiny Size** - 3.6KB minified, 1.3KB gzipped  
 
 ## Quick Start
 
 ### 1. Include the Framework
 ```html
-<script src="715.js"></script>
+<!-- Latest version (auto-updates) -->
+<script src="https://cdn.jsdelivr.net/gh/fabienbrocklesby/715-Framework@main/715.ultra.min.js"></script>
+
+<!-- Or use a specific version (recommended for production) -->
+<script src="https://cdn.jsdelivr.net/gh/fabienbrocklesby/715-Framework@v1.0.0/715.ultra.min.js"></script>
+
+<!-- Or download locally -->
+<script src="715.ultra.min.js"></script>
 ```
 
 ### 2. Create Variables (Minimal JavaScript)

@@ -1,0 +1,43 @@
+name: Build and Minify
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ '715.js' ]  # Only run when 715.js changes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install UglifyJS
+      run: npm install -g uglify-js
+    
+    - name: Minify JavaScript
+      run: |
+        # Standard minification
+        uglifyjs 715.js -o 715.min.js -c -m
+        
+        # Ultra minification with aggressive compression
+        uglifyjs 715.js -o 715.ultra.min.js -c sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -m
+        
+        echo "Original size: $(wc -c < 715.js) bytes"
+        echo "Standard minified: $(wc -c < 715.min.js) bytes"
+        echo "Ultra minified: $(wc -c < 715.ultra.min.js) bytes"
+        echo "Standard gzipped: $(gzip -c 715.min.js | wc -c) bytes"
+        echo "Ultra gzipped: $(gzip -c 715.ultra.min.js | wc -c) bytes"
+    
+    - name: Commit minified files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add 715.min.js 715.ultra.min.js
+        git diff --staged --quiet || git commit -m "Auto-minify: Update minified files"
+        git push
