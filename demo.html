@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>715 Framework - Optimized Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="715.js"></script>
+</head>
+<body class="bg-base-100 min-h-screen">
+    <div class="container mx-auto p-8">
+        <div class="hero bg-primary text-primary-content rounded-lg mb-8">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h1 class="text-5xl font-bold">715 Framework</h1>
+                    <p class="py-6">A minimal, reactive JavaScript framework</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Automatic Text Input</h2>
+                <div class="bg-base-100 p-4 rounded-lg">
+                    <p class="mb-4">Hello <strong>{{userName}}</strong>!</p>
+                    <input type="text" data-715-var="userName" class="input input-bordered w-full" placeholder="Type your name - no JavaScript needed!">
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Automatic Counter</h2>
+                <div class="text-center">
+                    <div class="text-4xl font-bold mb-4">{{count}}</div>
+                    <div class="space-x-2">
+                        <button data-715-var="count" data-715-action="decrement" class="btn btn-error">-1</button>
+                        <button data-715-var="count" data-715-action="reset" class="btn btn-neutral">Reset</button>
+                        <button data-715-var="count" data-715-action="increment" class="btn btn-success">+1</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Automatic Show/Hide</h2>
+                <div class="form-control mb-4">
+                    <label class="cursor-pointer label">
+                        <span class="label-text">Show message</span>
+                        <input type="checkbox" data-715-var="showMessage" class="checkbox checkbox-primary">
+                    </label>
+                </div>
+                <div data-715-if="showMessage === true" class="alert alert-success">
+                    <span>✅ This appears automatically when checked!</span>
+                </div>
+                <div data-715-if="count > 3" class="alert alert-warning mt-4">
+                    <span>⚠️ Counter is above 3! Current: {{count}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Automatic Slider</h2>
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Size: {{boxSize}}px</span>
+                    </label>
+                    <input type="range" data-715-var="boxSize" min="50" max="150" class="range range-primary">
+                </div>
+                <div class="form-control mb-4">
+                    <select data-715-var="boxColour" class="select select-bordered">
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                    </select>
+                </div>
+                <div class="flex justify-center">
+                    <div 
+                        data-715-style="width: {{boxSize}}px; height: {{boxSize}}px; background-color: {{boxColour}};"
+                        class="rounded-lg flex items-center justify-center text-white font-bold">
+                        {{boxSize}}px
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Automatic Theme</h2>
+                <div class="bg-base-100 p-4 rounded-lg">
+                    <p class="mb-2">Theme: <span class="badge">{{theme}}</span></p>
+                    <p class="text-sm opacity-70 mb-4">Persists after refresh (localStorage)</p>
+                    <select data-715-var="theme" class="select select-bordered">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="cyberpunk">Cyberpunk</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Custom Actions</h2>
+                <div class="text-center">
+                    <p class="mb-4">Current value: {{customValue}}</p>
+                    <div class="space-x-2 mb-4">
+                        <button data-715-var="customValue" data-715-action="set:10" class="btn btn-primary">Set to 10</button>
+                        <button data-715-var="customValue" data-715-action="set:25" class="btn btn-secondary">Set to 25</button>
+                        <button data-715-var="customValue" data-715-action="set:50" class="btn btn-accent">Set to 50</button>
+                    </div>
+                    <div class="space-x-2">
+                        <button data-715-var="showMessage" data-715-action="toggle" class="btn btn-info">Toggle Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userName = sevenFifteen.variable('userName', 'World', 'session');
+        const count = sevenFifteen.variable('count', 0, 'session');
+        const showMessage = sevenFifteen.variable('showMessage', false, 'session');
+        const boxSize = sevenFifteen.variable('boxSize', 100, 'session');
+        const boxColour = sevenFifteen.variable('boxColour', 'red', 'session');
+        const theme = sevenFifteen.variable('theme', 'light', 'local');
+        const customValue = sevenFifteen.variable('customValue', 0, 'session');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            sevenFifteen.init();
+
+            document.documentElement.setAttribute('data-theme', theme.get());
+
+            const originalThemeSet = theme.set;
+            theme.set = function(newValue) {
+                originalThemeSet.call(this, newValue);
+                document.documentElement.setAttribute('data-theme', newValue);
+            };
+        });
+    </script>
+</body>
+</html>
