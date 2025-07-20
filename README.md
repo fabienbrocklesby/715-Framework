@@ -10,7 +10,10 @@ A lightning-fast, zero-dependency reactive JavaScript framework with no fluff, j
 **🔧 Zero Dependencies** - Pure JavaScript, no external libraries required  
 **💾 Built-in Persistence** - Automatic localStorage and sessionStorage support  
 **🎯 Minimal Setup** - Works directly in browsers with no build process  
-**📦 Tiny Size** - 3.6KB minified, 1.3KB gzipped  
+**📦 Tiny Size** - 4.0KB minified, 1.4KB gzipped  
+**🧮 Computed Variables** - Automatic reactive calculations  
+**🎨 Transform Filters** - Built-in text, currency, and date formatting  
+**🧠 Smart Expressions** - Mathematical operations and string concatenation in templates  
 
 ## Quick Start
 
@@ -56,6 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- Dynamic styling -->
 <div data-715-style="width: {{count}}px; height: {{count}}px;"></div>
+
+<!-- Transform filters -->
+<p>Price: {{price | currency:GBP:en-GB}}</p>
+<p>Name: {{name | upper}}</p>
 ```
 
 That's it! Reactive variables, automatic DOM updates, zero dependencies.
@@ -71,18 +78,35 @@ const temp = sevenFifteen.variable('temp', 0, 'session');
 const theme = sevenFifteen.variable('theme', 'light', 'local');
 ```
 
+### Computed Variables
+```javascript
+// Automatically updates when dependencies change
+const fullName = sevenFifteen.computed('fullName', 
+    () => `${firstName.get()} ${lastName.get()}`,
+    ['firstName', 'lastName']
+);
+```
+
+### Transform Filters
+```html
+<!-- Built-in filters -->
+<p>{{price | currency:USD:en-US}}</p>
+<p>{{date | format:en-GB}}</p>
+<p>{{name | upper}}</p>
+<p>{{text | lower}}</p>
+
+<!-- Custom filters -->
+<script>
+sevenFifteen.filter('reverse', str => str.split('').reverse().join(''));
+</script>
+<p>{{text | reverse}}</p>
+```
+
 ### Automatic Form Controls
 ```html
-<!-- Text inputs -->
 <input type="text" data-715-var="userName">
-
-<!-- Checkboxes -->
 <input type="checkbox" data-715-var="isVisible">
-
-<!-- Range sliders -->
 <input type="range" data-715-var="volume" min="0" max="100">
-
-<!-- Dropdowns -->
 <select data-715-var="colour">
     <option value="red">Red</option>
     <option value="blue">Blue</option>
@@ -133,14 +157,61 @@ const theme = sevenFifteen.variable('theme', 'light', 'local');
 <!-- In text content -->
 <p>User: {{userName}} | Score: {{score}}</p>
 
+<!-- With transform filters -->
+<p>Price: {{price | currency:EUR:en-DE}}</p>
+<p>Date: {{date | format:en-AU}}</p>
+<p>Text: {{message | upper | reverse}}</p>
+
+<!-- Mathematical operations -->
+<p>Plus 10: {{number + 10}}</p>
+<p>Times 2: {{number * 2}}</p>
+<p>Complex: {{(number + 5) * 2 - 1}}</p>
+
+<!-- String concatenation -->
+<p>Greeting: {{"Hello " + userName}}</p>
+<p>With suffix: {{userName + "!"}}</p>
+<p>Multiple: {{"Hello " + userName + ", welcome!"}}</p>
+
+<!-- Mixed operations -->
+<p>Dynamic: {{userName + " has " + count + " items"}}</p>
+<p>Conditional: {{showMessage ? "ON" : "OFF"}}</p>
+<p>Math + Text: {{userName + " #" + (userId * 10)}}</p>
+
 <!-- In attributes -->
 <img src="{{imageUrl}}" alt="{{imageDescription}}">
 <a href="{{linkUrl}}" title="{{linkTitle}}">{{linkText}}</a>
 
 <!-- Multiple variables in one element -->
 <div class="user-{{userId}}" data-score="{{score}}">
-    {{userName}} has {{score}} points
+    {{userName}} has {{score | currency}} points
 </div>
+```
+
+### Mathematical Expressions
+715 Framework supports JavaScript expressions directly in templates:
+
+```html
+<!-- Basic arithmetic -->
+<p>{{price + tax}}</p>
+<p>{{width * height}}</p>
+<p>{{total / count}}</p>
+<p>{{price - discount}}</p>
+
+<!-- Complex expressions -->
+<p>{{(price + tax) * quantity}}</p>
+<p>{{Math.round(average * 100) / 100}}</p>
+
+<!-- Comparisons and ternary operators -->
+<p>{{count > 10 ? "High" : "Low"}}</p>
+<p>{{isLoggedIn ? userName : "Guest"}}</p>
+
+<!-- String operations -->
+<p>{{firstName + " " + lastName}}</p>
+<p>{{message + " (" + timestamp + ")"}}</p>
+
+<!-- Combined with filters -->
+<p>{{(price * 1.2) | currency:EUR:en-DE}}</p>
+<p>{{(firstName + " " + lastName) | upper}}</p>
 ```
 
 ## Performance
@@ -172,6 +243,37 @@ console.log(counter.get()); // 0
 counter.set(5); // Updates DOM automatically
 ```
 
+### `sevenFifteen.computed(name, fn, dependencies)`
+Creates a computed variable that auto-updates when dependencies change.
+
+**Parameters:**
+- `name` (string): Unique computed variable name
+- `fn` (function): Function that returns the computed value
+- `dependencies` (array): Array of variable names this depends on
+
+**Returns:** Object with `get()` method
+
+```javascript
+const fullName = sevenFifteen.computed('fullName',
+    () => `${firstName.get()} ${lastName.get()}`,
+    ['firstName', 'lastName']
+);
+```
+
+### `sevenFifteen.filter(name, fn)`
+Creates a custom transform filter.
+
+**Parameters:**
+- `name` (string): Filter name for use in templates
+- `fn` (function): Function that transforms the input value
+
+```javascript
+sevenFifteen.filter('slug', str => 
+    str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+);
+// Usage: {{title | slug}}
+```
+
 ### `sevenFifteen.init()`
 Initialises the framework. Call after creating all variables.
 
@@ -199,6 +301,24 @@ Shows/hides elements based on conditions.
 
 ### `data-715-style="cssWithVariables"`
 Applies dynamic CSS without parser errors.
+
+## Built-in Filters
+
+### Text Filters
+- `upper` - Converts to uppercase
+- `lower` - Converts to lowercase
+
+### Currency Filters
+- `currency` - Formats as currency (default USD, en-US)
+- `currency:EUR:en-DE` - Euro in German format
+- `currency:GBP:en-GB` - British Pound in UK format
+- `currency:NZD:en-NZ` - New Zealand Dollar
+
+### Date Filters
+- `format` - Formats date (default en-US)
+- `format:en-GB` - UK date format
+- `format:en-AU` - Australian date format
+- `format:sv-SE` - ISO format (YYYY-MM-DD)
 
 ## Browser Support
 
@@ -260,6 +380,27 @@ sevenFifteen.init();
 <script>
 const size = sevenFifteen.variable('size', 100, 'session');
 const colour = sevenFifteen.variable('colour', 'red', 'session');
+sevenFifteen.init();
+</script>
+```
+
+### Mathematical Calculator
+```html
+<div>
+    <input type="number" data-715-var="num1" placeholder="First number">
+    <input type="number" data-715-var="num2" placeholder="Second number">
+    
+    <div>
+        <p>Sum: {{num1 + num2}}</p>
+        <p>Product: {{num1 * num2}}</p>
+        <p>Average: {{(num1 + num2) / 2}}</p>
+        <p>Result: {{num1 > num2 ? num1 + " is bigger" : num2 + " is bigger"}}</p>
+    </div>
+</div>
+
+<script>
+const num1 = sevenFifteen.variable('num1', 0, 'session');
+const num2 = sevenFifteen.variable('num2', 0, 'session');
 sevenFifteen.init();
 </script>
 ```

@@ -89,6 +89,117 @@
 
         <div class="card bg-base-200 shadow-xl mb-8">
             <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Mathematical Operations & String Concatenation</h2>
+                <div class="bg-base-100 p-4 rounded-lg space-y-4">
+                    <div>
+                        <label class="label">Enter a number</label>
+                        <input type="number" data-715-var="mathNumber" class="input input-bordered w-full" placeholder="5">
+                        <div class="mt-2 space-y-1">
+                            <p>Original: {{mathNumber}}</p>
+                            <p>Plus 10: {{mathNumber + 10}}</p>
+                            <p>Times 2: {{mathNumber * 2}}</p>
+                            <p>Squared: {{mathNumber * mathNumber}}</p>
+                            <p>Complex: {{(mathNumber + 5) * 2 - 1}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div>
+                        <label class="label">Enter your name</label>
+                        <input type="text" data-715-var="greetingName" class="input input-bordered w-full" placeholder="John">
+                        <div class="mt-2 space-y-1">
+                            <p>Original: {{greetingName}}</p>
+                            <p>With Hello: {{"Hello " + greetingName}}</p>
+                            <p>With suffix: {{greetingName + "!"}} </p>
+                            <p>Full greeting: {{"Hello " + greetingName + ", welcome!"}}</p>
+                            <p>With number: {{greetingName + " #" + mathNumber}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div>
+                        <p class="font-bold">Mixed Operations</p>
+                        <div class="mt-2 space-y-1">
+                            <p>Count + 5: {{count + 5}}</p>
+                            <p>Box size / 2: {{boxSize / 2}}px</p>
+                            <p>Dynamic message: {{showMessage ? "Message is ON" : "Message is OFF"}}</p>
+                            <p>User + Count: {{userName + " has " + count + " items"}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Computed Variables</h2>
+                <div class="bg-base-100 p-4 rounded-lg">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="label">First Name</label>
+                            <input type="text" data-715-var="firstName" class="input input-bordered w-full" placeholder="John">
+                        </div>
+                        <div>
+                            <label class="label">Last Name</label>
+                            <input type="text" data-715-var="lastName" class="input input-bordered w-full" placeholder="Doe">
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span>Full Name: <strong>{{fullName}}</strong></span>
+                    </div>
+                    <p class="text-sm opacity-70 mt-2">Computed automatically from firstName + lastName</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">Transform Filters</h2>
+                <div class="bg-base-100 p-4 rounded-lg space-y-4">
+                    <div>
+                        <label class="label">Enter a price</label>
+                        <input type="number" data-715-var="price" class="input input-bordered w-full" placeholder="99.99">
+                        <div class="mt-2 space-y-1">
+                            <p>USD: {{price | currency}}</p>
+                            <p>EUR: {{price | currency:EUR:en-US}}</p>
+                            <p>GBP: {{price | currency:GBP:en-GB}}</p>
+                            <p>NZD: {{price | currency:NZD:en-NZ}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div>
+                        <label class="label">Enter some text</label>
+                        <input type="text" data-715-var="sampleText" class="input input-bordered w-full" placeholder="Hello World">
+                        <div class="mt-2 space-y-1">
+                            <p>Original: {{sampleText}}</p>
+                            <p>Uppercase: {{sampleText | upper}}</p>
+                            <p>Lowercase: {{sampleText | lower}}</p>
+                            <p>Reversed: {{sampleText | reverse}}</p>
+                            <p>Slugified: {{sampleText | slug}}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div>
+                        <p class="font-bold">Date Formatting</p>
+                        <div class="mt-2 space-y-1">
+                            <p>US Format: {{currentDate | format:en-US}}</p>
+                            <p>UK Format: {{currentDate | format:en-GB}}</p>
+                            <p>AU/NZ Format: {{currentDate | format:en-AU}}</p>
+                            <p>ISO Format: {{currentDate | format:sv-SE}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
                 <h2 class="card-title text-2xl mb-4">Automatic Theme</h2>
                 <div class="bg-base-100 p-4 rounded-lg">
                     <p class="mb-2">Theme: <span class="badge">{{theme}}</span></p>
@@ -128,6 +239,31 @@
         const boxColour = sevenFifteen.variable('boxColour', 'red', 'session');
         const theme = sevenFifteen.variable('theme', 'light', 'local');
         const customValue = sevenFifteen.variable('customValue', 0, 'session');
+
+        // Variables for computed examples
+        const firstName = sevenFifteen.variable('firstName', 'John', 'session');
+        const lastName = sevenFifteen.variable('lastName', 'Doe', 'session');
+        
+        // Variables for filters examples
+        const price = sevenFifteen.variable('price', 99.99, 'session');
+        const sampleText = sevenFifteen.variable('sampleText', 'Hello World', 'session');
+        const currentDate = sevenFifteen.variable('currentDate', new Date().toISOString(), 'session');
+
+        // Variables for mathematical operations examples
+        const mathNumber = sevenFifteen.variable('mathNumber', 5, 'session');
+        const greetingName = sevenFifteen.variable('greetingName', 'John', 'session');
+
+        const testVar = sevenFifteen.variable('testVar', 0, 'session');
+
+        // Computed variable for full name
+        const fullName = sevenFifteen.computed('fullName', 
+            () => `${firstName.get()} ${lastName.get()}`,
+            ['firstName', 'lastName']
+        );
+
+        // Custom filters
+        sevenFifteen.filter('reverse', str => String(str).split('').reverse().join(''));
+        sevenFifteen.filter('slug', str => String(str).toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''));
 
         document.addEventListener('DOMContentLoaded', () => {
             sevenFifteen.init();
